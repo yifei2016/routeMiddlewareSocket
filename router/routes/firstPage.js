@@ -1,4 +1,4 @@
-var path = require('path');
+//var path = require('path');
 function firstPage(req,res){
   // var page =
   res.render('firstPage.pug')
