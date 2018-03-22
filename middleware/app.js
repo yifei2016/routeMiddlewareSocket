@@ -4,15 +4,16 @@ var express = require('express');
 var app = express();
 var fs = require('fs');
 
-app.set('view engine', 'pug');
-app.set('views', __dirname);
+app.set('view engine', 'pug');//set up
+app.set('views',__dirname + '/views');
+app.use(express.static(__dirname + '/public'));
+
 app.use('/user/:id',function(req,res,next){
   // var d = new Date();
   // var n = d.getHours();
-  // console.log(n)
-  console.log('Time:', Date.now());
-  res.status(400)
-next()
+  console.log('Time:', Date.now()); //return number
+  res.status(400);
+  next();
  //res.sendFile(__dirname + '/index.html') not the common way, the common way is template engine
  //to terminate, send, status, render
 })
@@ -21,13 +22,11 @@ next()
 //Använd fs.appendFile() för att inte skriva över gammal information.
 
 app.use('/status',function(req,res,next){
-
   var request = ' method: ' + req.method + ' time: ' + Date.now() + ' status code: ' + res.statusCode;
-
   fs.appendFile('mynewfile1.txt', request, function (err) {
     if (err) throw err;
     console.log('Saved!');
-    next()
+    next();
   });
 })
 //Lägg till  en middleware-funktion som response skickar över innehållet i den fil du skrivit,
@@ -36,16 +35,16 @@ app.use('/request',function(req, res){
   var option = 'send request'
   fs.appendFile('file.txt', option, function(err){
      if (err) throw err;
-    console.log('sended')
+     console.log('sended');
+     next();
   })
 })
 
 app.get('/status',function(req,res,next) {
-
   res.send('');
 })
 app.get('/user/:id',function(req,res){
-  console.log('--------' + req.params.id)
+  console.log('--------', req.params.id)
   res.render('index');
 })
 
